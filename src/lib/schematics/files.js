@@ -26,8 +26,7 @@ const defaultFiles = {
   router: {
     ext: 'js',
     type: 'router',
-    content:
-      "import { Router } from 'express';\nimport %[R]% from './%[R]%.controller';\n\nclass %[R,U]%Route {\n\tconstructor() {\n\t\tthis.%[R]%Router = Router();\n\t\tthis.mountRoute();\n\t}\n\n\tmountRoute() {}\n}\n\nexport default %[R,U]%Route;"
+    content: "import { Router } from 'express';\nimport %[R]% from './%[R]%.controller';\n\nclass %[R,U]%Route {\n\tconstructor() {\n\t\tthis.%[R]%Router = Router();\n\t\tthis.mountRoute();\n\t}\n\n\tmountRoute() {\n\t\tthis.%[R]%Router.get('/', role.get%[R,U]%s);\n\t\tthis.%[R]%Router.get('/:id', role.get%[R,U]%);\n\t\tthis.%[R]%Router.post('/', role.create%[R,U]%);\n\t\tthis.%[R]%Router.put('/:id', role.update%[R,U]%);\n\t\tthis.%[R]%Router.patch('/:id', role.patch%[R,U]%);\n\t\tthis.%[R]%Router.delete('/:id', role.remove%[R,U]%);\n\t}\n}\n\nexport default %[R,U]%Route;"
   },
   schema: {
     ext: 'js',
