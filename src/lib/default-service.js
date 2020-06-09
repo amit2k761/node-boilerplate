@@ -1,9 +1,11 @@
 import appConstants from '../constants/app-constant';
 import moment from 'moment';
 import lodash from 'lodash';
+import DbService from './db-service';
 
-export default class DefaultService {
-  constructor() {
+export default class DefaultService extends DbService {
+  constructor(model) {
+    super(model);
     this._appConstants = appConstants;
   }
 
