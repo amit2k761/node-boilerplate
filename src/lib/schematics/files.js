@@ -37,8 +37,7 @@ const defaultFiles = {
   service: {
     ext: 'js',
     type: 'service',
-    content:
-      "import DefaultService from '../../../../lib/default-service';\nimport %[R,U]% from './%[R]%.model';\n\nexport class %[R,U]%Service extends DefaultService {\n\tconstructor() {\n\t\tsuper();\n\t}\n}\n\nexport default new %[R,U]%Service();"
+    content:"import DefaultService from '../../../../lib/default-service';\nimport %[R,U]% from './%[R]%.model';\n\nexport class %[R,U]%Service extends DefaultService {\n\tconstructor() {\n\t\tsuper(%[R,U]%);\n\t}\n\tgetAll%[R,U]% = async (params) => {\n\t\treturn super.find(params);\n\t};\n\n\tget%[R,U]% = async (id) => {\n\t\treturn super.get(id);\n\t};\n\n\tcreate%[R,U]% = async %[R]%Obj => {\n\t\tlet obj = await super.find({\n\t\t\tname:%[R]%Obj.name\n\t\t});\n\n\t\tif (obj.length) {\n\t\t\tthrow {\n\t\t\t\tstatusCode: this.appConstants.http_codes.already_exists,\n\t\t\t\t\tmessage: '%[R,U]% already exists'\n\t\t\t\t};\n\t\t}\n\t\treturn super.create(%[R]%Obj);\n\t};\n\n\tremove%[R,U]% = async (%[R]%Id,params) => {\n\t\tlet obj = await super.find({\n\t\t\t_id:mongoose.Types.ObjectId(%[R]%Id)\n\t\t});\n\t\tif (!obj.length) {\n\t\t\tthrow {\n\t\t\t\tstatusCode: this.appConstants.http_codes.not_found,\n\t\t\t\tmessage: '%[R,U]% not Found'\n\t\t\t};\n\t\t}\n\t\treturn super.remove(%[R]%Id,params);\n\t}\n\n\tupdate%[R,U]% = async(id,%[R]%Obj,params) => {\n\t\tlet %[R]% = await super.get(id);\n\t\tif (!%[R]%) {\n\t\t\tthrow {\n\t\t\t\tstatusCode: this.appConstants.http_codes.not_found,\n\t\t\t\tmessage: '%[R,U]% not Found'\n\t\t\t};\n\t\t}\n\t\treturn super.update(id,%[R]%Obj,params);\n\t}\n\n}\n\nexport default new %[R,U]%Service();"
   },
   validator: {
     ext: 'js',
