@@ -7,7 +7,8 @@ export default {
     internal_server_error: 500,
     created: 201,
     already_exists: 409,
-    unauthenticated: 401
+    unauthenticated: 401,
+    no_content:204
   },
   messsages: {
     resources: {
@@ -21,6 +22,18 @@ export default {
           name_required: 'Role name is required',
           description_required: 'Role description is required',
           type_required: 'Role type is required'
+        }
+      },
+      default: {
+        success: {},
+        error: {
+          default_not_created: 'Unable to create',
+          default_not_available: 'Not available'
+        },
+        validation: {
+          name_required: 'temp name is required',
+          description_required: 'temp description is required',
+          type_required: 'temp type is required'
         }
       },
       user: {
@@ -47,6 +60,7 @@ export default {
         pre_server_connections_setup:
           'Pre server connections setup done successfully',
         mongodb_connected: 'MongoDB connected successfully',
+        sql_connected: 'sql connected successfully',
         env_validated: 'Environment variables validated successfully',
         redis_connected: 'Redis connected successfully'
       },
@@ -55,6 +69,7 @@ export default {
         pre_server_connections_failed: 'Pre server connections setup failed',
         server_failed: 'Error starting server',
         mongodb_connection_failed: 'MongoDb connection failed',
+        sql_connection_failed: 'sql connection failed',
         env_validation_failed: 'Environment variables variable failed',
         all_db_connections_failed: 'Error connecting databases',
         redis_connection_failed: 'Redis connection failed'
@@ -65,5 +80,9 @@ export default {
   notifications: {
     welcome_title: 'Royale Arena',
     welcome_text: 'Welcome to Royale Arena'
+  },
+  properties:{
+    skip:0,
+    limit:10
   }
 };

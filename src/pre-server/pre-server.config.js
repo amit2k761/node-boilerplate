@@ -15,7 +15,7 @@ import CronJobs from './cron';
 
 export default {
   validateEnv: {
-    priority: 1,
+    priority: 3,
     status: false,
     fn: validateEnv,
     args: [],
@@ -23,7 +23,7 @@ export default {
   },
   db: {
     priority: 2,
-    status: false,
+    status: true,
     fn: new Db().connectDbs,
     args: [
       {
@@ -36,15 +36,28 @@ export default {
     ],
     context: new Db()
   },
+  sqldb: {
+    priority: 1,
+    status: false,
+    fn: new Db().connectSql,
+    args: [
+      config.sqlServerDetails
+      /**
+       * Pass null in url to stop connecting to mongo. To add sql connection simply add to args array
+       * in the format above and pass url
+       */
+    ],
+    context: new Db()
+  },
   redis: {
-    priority: 3,
+    priority: 4,
     status: false,
     fn: new RedisCache().connectRedis,
     args: [],
     context: new RedisCache()
   },
   cron: {
-    priority: 4,
+    priority: 5,
     status: false,
     fn: new CronJobs().startCronJobs,
     args: [],

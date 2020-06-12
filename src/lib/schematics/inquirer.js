@@ -5,6 +5,12 @@ import { resolve } from 'dns';
 import chalk from 'chalk';
 
 const questions = {
+  database:{
+    type: 'list',
+    name: 'database',
+    message: 'Which database you want to configure',
+    choices: ['mongoose','sqlize']
+  },
   operation: {
     type: 'list',
     name: 'operation',
@@ -45,6 +51,42 @@ export default class Inquirer {
   }
 
   async askOperation() {
+    let dbDetails = await inquirer.prompt(questions.database);
+    await inquirer.prompt(questions.operation).then(answers => {
+      switch (answers.operation) {
+        case 'Resource': {
+          this.askForResourceName(dbDetails.database);
+          break;
+        }
+        case 'Utility': {
+          console.log(
+            chalk.blue('Dont be lazy. Make some of your own templates')
+          );
+          process.exit(0);
+          break;
+        }
+      }
+    });
+  }
+
+  askForResourceName(database) {
+    inquirer.prompt(questions.resourceName).then(async ({ resource }) => {
+      if (!resource) {
+        return;
+      }
+      resourceSpinner.start();
+      await spinnerInterval(4000);
+      resourceSpinner.stop();
+      fileSpinner.start();
+      await spinnerInterval(2000);
+      await new File().generateResource(resource,database);
+      fileSpinner.stop();
+
+      process.exit(0);
+    });
+  }
+
+  async askDatabase() {
     await inquirer.prompt(questions.operation).then(answers => {
       switch (answers.operation) {
         case 'Resource': {
@@ -62,20 +104,4 @@ export default class Inquirer {
     });
   }
 
-  askForResourceName() {
-    inquirer.prompt(questions.resourceName).then(async ({ resource }) => {
-      if (!resource) {
-        return;
-      }
-      resourceSpinner.start();
-      await spinnerInterval(4000);
-      resourceSpinner.stop();
-      fileSpinner.start();
-      await spinnerInterval(2000);
-      await new File().generateResource(resource);
-      fileSpinner.stop();
-
-      process.exit(0);
-    });
-  }
 }
