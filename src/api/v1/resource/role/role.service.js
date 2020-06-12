@@ -3,11 +3,11 @@ import Role from './role.model';
 
 export class RoleService extends DefaultService {
   constructor() {
-    super();
+    super(Role, 'Mongoose');
   }
 
   getAllRoles = async () => {
-    return Role.find({});
+    return super.find();
   };
 
   getRole = async obj => {

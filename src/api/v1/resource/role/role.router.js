@@ -10,7 +10,7 @@ class RoleRoute {
   }
 
   mountRoute() {
-    this.roleRouter.use(isAuthorized([roleConstant.ROLE_SUPER_ADMIN]));
+    //this.roleRouter.use(isAuthorized([roleConstant.ROLE_SUPER_ADMIN]));
     this.roleRouter.get('/', role.getRoles);
     this.roleRouter.post('/', role.createRole);
   }

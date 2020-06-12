@@ -59,7 +59,7 @@ export class V1Route {
   mountRoute() {
     this.v1Router.use('/auth', new AuthRoute().authRouter);
 
-    this.v1Router.use(passport.authenticate('jwt', { session: false }));
+    //this.v1Router.use(passport.authenticate('jwt', { session: false }));
 
     this.v1Router.use('/role', new RoleRoute().roleRouter);
     this.v1Router.use('/user', new UserRoute().userRouter);
