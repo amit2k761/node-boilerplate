@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
 
 export default class MongooseService {
-  async find(queryObj = {}, select = {}, params = {}) {
-    let { limit, skip } = params;
-    params = _.omit(params, ['limit', 'skip']);
+  async find(queryObj = {}, params = {}) {
+    let { limit, skip, select } = params;
+    params = _.omit(params, ['limit', 'skip', 'select']);
 
     return this._model
       .find(queryObj, select, params)
@@ -11,7 +11,9 @@ export default class MongooseService {
       .limit(+limit || 10);
   }
 
-  async get(id, select = {}, params = {}) {
+  async get(id, params = {}) {
+    let { select } = params;
+    params = _.omit(params, ['select']);
     return await this._model.findOne({ _id: id }, select, params);
   }
 
