@@ -28,20 +28,10 @@ export default {
     args: [
       {
         mongo: { url: config.dataBaseUrl }
-      }
-      /**
-       * Pass null in url to stop connecting to mongo. To add sql connection simply add to args array
-       * in the format above and pass url
-       */
-    ],
-    context: new Db()
-  },
-  sqldb: {
-    priority: 1,
-    status: false,
-    fn: new Db().connectSql,
-    args: [
-      config.sqlServerDetails
+      },
+      // {
+      //   mysql : {properties : config.sqlServerDetails}
+      // }
       /**
        * Pass null in url to stop connecting to mongo. To add sql connection simply add to args array
        * in the format above and pass url
