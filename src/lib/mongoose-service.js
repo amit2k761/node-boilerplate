@@ -26,6 +26,6 @@ export default class MongooseService {
   }
 
   async update(id, data, params) {
-    return this._model.findOneAndUpdate({ _id: id }, data, params);
+    return this._model.findOneAndUpdate({ _id: id }, data , {new: true,...params});
   }
 }
