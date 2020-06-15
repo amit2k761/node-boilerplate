@@ -45,6 +45,17 @@ const fileSpinner = new Spinner(chalk.blue('Generating files. Please wait !'), [
   '⣷'
 ]);
 
+const v1RouteSpinner = new Spinner(chalk.blue('Rewriting v1 routes !'), [
+  '⣾',
+  '⣽',
+  '⣻',
+  '⢿',
+  '⡿',
+  '⣟',
+  '⣯',
+  '⣷'
+]);
+
 async function spinnerInterval(time) {
   return new Promise(resolve => {
     setTimeout(resolve, time);
@@ -88,8 +99,16 @@ export default class Inquirer {
       resourceSpinner.stop();
       fileSpinner.start();
       await spinnerInterval(2000);
-      await new File().generateResource(resource, orm);
-      fileSpinner.stop();
+      let resourceStatus = await new File().generateResource(resource, orm);
+      if (resourceStatus) {
+        fileSpinner.stop();
+        v1RouteSpinner.start();
+        await spinnerInterval(3000);
+        let v1RouteStatus = await new File().generateV1Route(resource);
+        if (v1RouteStatus) {
+          v1RouteSpinner.stop();
+        }
+      }
 
       process.exit(0);
     });

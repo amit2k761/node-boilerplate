@@ -3,11 +3,14 @@ import path from 'path';
 import { promisify } from 'util';
 import _ from 'lodash';
 import chalk from 'chalk';
+import es from 'event-stream';
 
 const asyncFs = {
   exists: promisify(fs.exists),
   mkdir: promisify(fs.mkdir),
-  writeFile: promisify(fs.writeFile)
+  writeFile: promisify(fs.writeFile),
+  readFile: promisify(fs.readFile),
+  readdir: promisify(fs.readdir)
 };
 
 const defaultFiles = {
@@ -84,6 +87,7 @@ export class File {
       );
 
       await this.generateFiles(resourceName, orm);
+      return true;
     } catch (error) {
       console.log('error====>', error);
     }
@@ -152,6 +156,76 @@ export class File {
       allMatches.forEach(match => {
         props.content = props.content.replaceAll(match, dictionary[match]);
       });
+    }
+  }
+
+  async generateV1Route(resourceName) {
+    try {
+      let isMountRouteFound;
+      let globalLineCounter = 0;
+
+      let isMountRouteStartProps = { status: false, lineCounter: null };
+      let isMountRouteCloseProps = { status: false, lineCounter: null };
+
+      let data = await asyncFs.readFile(path.resolve(`src/api/v1/index.js`));
+
+      data = data.toString().split('\n');
+
+      data.forEach(line => {
+        ++globalLineCounter;
+
+        isMountRouteFound = line.trim().match(/^mountRoute()/);
+
+        if (isMountRouteFound) {
+          if (isMountRouteFound.input.includes('{')) {
+            isMountRouteStartProps.status = true;
+            isMountRouteStartProps.lineCounter = globalLineCounter;
+          }
+        }
+
+        if (isMountRouteFound && !isMountRouteStartProps.status) {
+          let isMountRouteStartFound = line.trim().match(/^}/);
+
+          if (isMountRouteStartFound) {
+            isMountRouteStartProps.status = true;
+            isMountRouteStartProps.lineCounter = globalLineCounter;
+          }
+        }
+
+        if (isMountRouteStartProps.status && !isMountRouteCloseProps.status) {
+          let isMountRouteCloseFound = line.trim().match(/^}/);
+
+          if (isMountRouteCloseFound) {
+            isMountRouteCloseProps.status = true;
+            isMountRouteCloseProps.lineCounter = globalLineCounter;
+          }
+        }
+      });
+
+      data.splice(
+        0,
+        0,
+        `import ${resourceName.charAt(0).toUpperCase() +
+          resourceName.slice(
+            1
+          )}Route from './resource/${resourceName.toLowerCase()}/${resourceName.toLowerCase()}.router';`
+      );
+
+      data.splice(
+        isMountRouteCloseProps.lineCounter,
+        0,
+        `\t\tthis.v1Router.use('/${resourceName.toLowerCase()}', new ${resourceName
+          .charAt(0)
+          .toUpperCase() +
+          resourceName.slice(1)}Route().${resourceName.toLowerCase()}Router);`
+      );
+
+      const text = data.join('\n');
+
+      await asyncFs.writeFile(path.resolve(`src/api/v1/index.js`), text);
+      return true;
+    } catch (error) {
+      console.log('error====>', error);
     }
   }
 }
