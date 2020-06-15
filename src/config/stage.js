@@ -8,6 +8,13 @@ export const config = {
     jwtExp: process.env.JWT_EXPIRATION
   },
   dataBaseUrl: process.env.DATABASE_URL,
+  sqlServerDetails:{
+    HOST: process.env.HOST,
+    USER: process.env.USER,
+    PASSWORD: process.env.PASSWORD,
+    DB: process.env.DB,
+    dialect: process.env.dialect
+  },
   bcrypt_salt_work_factor: 12,
   mail_server_email_id: process.env.MAIL_SERVER_EMAIL_ID,
   mail_server_password: process.env.MAIL_SERVER_PASSWORD,
