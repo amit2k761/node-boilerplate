@@ -36,7 +36,7 @@ const defaultFiles = {
     ext: 'js',
     type: 'schema',
     content:
-      "import mongoose, { Schema } from 'mongoose';\nimport appConstant from '../../../../constants/app-constant';\n\nconst %[R,U]%Schema = new mongoose.Schema({\n\tname: {\n\t\ttype: String,\n\t\trequired: [\n\t\t\ttrue,\n\t\t\tappConstant.messsages.resources.default.validation.name_required\n\t\t]\n\t}\n},{ timestamps: true, strict: true});\n\nexport default %[R,U]%Schema;"
+      "import mongoose, { Schema } from 'mongoose';\nimport appConstant from '../../../../constants/app-constant';\n\nconst %[R,U]%Schema = new mongoose.Schema({\n\tname: {\n\t\ttype: String,\n\t\trequired: [\n\t\t\ttrue,\n\t\t\tappConstant.messsages.resources.default.validation.name_required\n\t\t]\n\t},__v: { type: Number, select: false}\n},{ timestamps: true, strict: true});\n\nexport default %[R,U]%Schema;"
   },
   service: {
     ext: 'js',
