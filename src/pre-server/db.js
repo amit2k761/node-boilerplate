@@ -6,8 +6,16 @@ export class Db {
   }
 
   async connectDbs(dbObj) {
-    try {
-      await this._connectMongoDb(dbObj.mongo.url);
+    try{
+      let dbName = Object.keys(dbObj);
+      switch(dbName[0]){
+        case 'mongo':
+          await this._connectMongoDb(dbObj.mongo.url);
+          break;
+        case 'mysql':
+          await this._connectMySqlDB(dbObj.mysql.properties);
+          break;
+      }
     } catch (error) {
       console.custom.error(
         appConstants.messsages.server.error.all_db_connections_failed,
@@ -17,36 +25,14 @@ export class Db {
     }
   }
 
-  async connectSql(dbObj){
+  async _connectMySqlDB(dbObj){
     try {
-      await this.connectSqlDB(dbObj);
-    } catch (error) {
-      console.custom.error(
-        appConstants.messsages.server.error.all_db_connections_failed,
-        error
-      );
-      throw new Error(error);
-    }
-  }
-
-  async connectSqlDB(serverDetails){
-    try {
-        const sequelize = new Sequelize(serverDetails.DB, serverDetails.USER, serverDetails.PASSWORD, {
-          host: serverDetails.HOST,
-          dialect: serverDetails.dialect,
-          operatorsAliases: serverDetails.operatorsAliases,
-          pool: {
-            max: serverDetails.pool.max,
-            min: serverDetails.pool.min,
-            acquire: serverDetails.pool.acquire,
-            idle: serverDetails.pool.idle
-          }
+        // const sequelize = await global.mysqlConnection(dbObj);
+        const sequelize = new Sequelize(dbObj.DB, dbObj.USER, dbObj.PASSWORD, {
+          host: dbObj.HOST,
+          dialect: dbObj.dialect
         });
-        const db = {};
-
-        db.Sequelize = Sequelize;
-        db.sequelize = sequelize;
-        await db.sequelize.sync();
+        await sequelize.authenticate();
         console.custom.info(
           appConstants.messsages.server.success.sql_connected
         );
