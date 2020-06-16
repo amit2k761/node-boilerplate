@@ -70,8 +70,8 @@ export class File {
   async generateResource(resourceName, orm) {
     try {
       if(orm == "Sequelize"){
-        defaultFiles.model.content = "import Sequelize from 'sequelize';\nimport %[R,U]% from './%[R]%.schema';\nimport config from '../../../../config/index';\n\nclass Init{\n\tconstructor(){\n\t\treturn this.initializeModel();\n\t}\n\n\tinitializeModel(){\n\t\tconst sequelize = new Sequelize(config.sqlServerDetails.DB,config.sqlServerDetails.USER,config.sqlServerDetails.PASSWORD,{\n\t\t\thost: config.sqlServerDetails.HOST,\n\t\t\tdialect: config.sqlServerDetails.dialect\n\t\t});\n\t\t// sequelize.sync({alter: true}); //use this if you want to enable alter table on sync\n\t\tsequelize.sync({});\n\t\tconst dataType = Sequelize.DataTypes;\n\t\tconst db = {sequelize,dataType};\n\t\tdb.%[R]% = new %[R,U]%(sequelize, dataType);\n\t\treturn db.%[R]%;\n\t}\n}\n\nlet %[R]%Model = new Init();\nexport default %[R]%Model;";
-        defaultFiles.schema.content = "module.exports = (sequelize, Sequelize) => {\n\tconst %[R]% = sequelize.define('%[R]%', {\n\t\tname: {\n\t\t\ttype: Sequelize.STRING\n\t\t}\n\t});\n\n\treturn %[R]%;\n};"
+        defaultFiles.model.content = "import %[R,U]% from './%[R]%.schema';\nimport Sequelize from 'sequelize';\nimport { sequelize } from '../../../../lib/connection';\n\nexport default sequelize.define('%[R]%s', %[R,U]%(Sequelize));";
+        defaultFiles.schema.content = "export default (Sequelize) => ({\n\tname: {\n\t\ttype: Sequelize.STRING\n\t}\n});"
       }
       resourceName = resourceName.toLowerCase();
       const isExists = await asyncFs.exists(
