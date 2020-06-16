@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import appConstants from '../constants/app-constant';
 import Sequelize from 'sequelize';
+import {sequelize} from "../lib/connection";
 export class Db {
   constructor() {
   }
@@ -29,12 +30,7 @@ export class Db {
 
   async _connectMySqlDB(dbObj){
     try {
-        // const sequelize = await global.mysqlConnection(dbObj);
-        const sequelize = new Sequelize(dbObj.DB, dbObj.USER, dbObj.PASSWORD, {
-          host: dbObj.HOST,
-          dialect: dbObj.dialect
-        });
-        await sequelize.authenticate();
+        await sequelize.sync();
         console.custom.info(
           appConstants.messsages.server.success.sql_connected
         );
