@@ -24,6 +24,18 @@ export default class DefaultController {
     return sendResponse(res, statusCode, data);
   }
 
+  success(res, data){
+    return sendResponse(res, this.appConstants.http_codes.success, data);
+  }
+
+  created(res,data){
+    return sendResponse(res,this.appConstants.http_codes.created, data);
+  }
+
+  noContent(res){
+    return sendResponse(res,this.appConstants.http_codes.no_content);
+  }
+
   clearCache(key) {
     clearHash(key);
   }
