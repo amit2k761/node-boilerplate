@@ -20,7 +20,7 @@ export default class SequelizeService {
     async create(data,params) {
         return this._model.bulkCreate(data, {
             returning: true,
-            fields: params
+            attributes: params
         }); 
     }
 
@@ -32,11 +32,12 @@ export default class SequelizeService {
         })
     }
 
+    //result will only be returned in case of postgres
     async update(id, data, params) {
         return this._model.update(data,{
             where: {id: id},
             attributes:params,
-            returning:true
+            returning: true
         },params);
     }
 }
