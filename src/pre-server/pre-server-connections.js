@@ -41,7 +41,7 @@ export class PreServer {
 
     for (let config of configs) {
       let { fn, args, context } = preServerConfig[config];
-      await fn.apply(context ? context : this, args);
+      await fn.apply(context ? context : this, [args]);
     }
   }
 }

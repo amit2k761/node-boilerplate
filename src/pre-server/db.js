@@ -5,17 +5,19 @@ export class Db {
   constructor() {
   }
 
-  async connectDbs(dbObj) {
+  async connectDbs(dbConnections) {
     try{
-      let dbName = Object.keys(dbObj);
-      switch(dbName[0]){
-        case 'mongo':
-          await this._connectMongoDb(dbObj.mongo.url);
-          break;
-        case 'mysql':
-          await this._connectMySqlDB(dbObj.mysql.properties);
-          break;
-      }
+      dbConnections.forEach(async dbObj =>{
+        let dbName = Object.keys(dbObj);
+        switch(dbName[0]){
+          case 'mongo':
+            await this._connectMongoDb(dbObj.mongo.url);
+            break;
+          case 'mysql':
+            await this._connectMySqlDB(dbObj.mysql.properties);
+            break;
+        }
+      })
     } catch (error) {
       console.custom.error(
         appConstants.messsages.server.error.all_db_connections_failed,
