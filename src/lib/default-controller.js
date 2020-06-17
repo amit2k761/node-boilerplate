@@ -16,8 +16,8 @@ export default class DefaultController {
     return new HttpException(statusCode, message, error);
   }
 
-  handleValidationError(req, modelValSchema) {
-    return handleValidationError(req, modelValSchema);
+  handleValidationError(req, modelValSchema,type) {
+    return handleValidationError(req, modelValSchema,type);
   }
 
   sendResponse(res, statusCode, data) {
