@@ -31,9 +31,9 @@ export default {
           default_not_available: 'Not available'
         },
         validation: {
-          name_required: 'temp name is required',
-          description_required: 'temp description is required',
-          type_required: 'temp type is required'
+          name_required: 'Name is required',
+          description_required: 'Description is required',
+          type_required: 'Type is required'
         }
       },
       user: {
