@@ -1,6 +1,4 @@
 import * as _ from 'lodash';
-import constants from '../constants/app-constant';
-import util from 'util';
 import MongooseService from './mongoose-service';
 import SequelizeService from './sequelize-service';
 export default class DbService {
@@ -13,10 +11,10 @@ export default class DbService {
   _extendOrmService() {
     switch (this._type) {
       case 'Mongoose':
-        util.inherits(DbService, MongooseService);
+        Object.setPrototypeOf(this, MongooseService.prototype);
         break;
       case 'Sequelize':
-        util.inherits(DbService, SequelizeService);
+        Object.setPrototypeOf(this, SequelizeService.prototype);
         break;
     }
   }
