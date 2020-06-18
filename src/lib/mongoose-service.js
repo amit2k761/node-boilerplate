@@ -18,7 +18,7 @@ export default class MongooseService {
   }
 
   async create(data, params) {
-    return this._model.insertMany(data, params);
+    return this._model.create(data, params);
   }
 
   async remove(id, params) {
