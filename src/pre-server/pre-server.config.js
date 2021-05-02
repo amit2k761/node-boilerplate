@@ -1,8 +1,8 @@
-import validateEnv from './validate-env';
-import { RedisCache } from './cache';
-import { Db } from './db';
-import config from '../config/index';
-import CronJobs from './cron';
+import validateEnv from "./validate-env";
+//import { RedisCache } from "./cache";
+import { Db } from "./db";
+import config from "../config/index";
+import CronJobs from "./cron";
 
 /**
  * @description The config object defines/holds following properties.
@@ -19,15 +19,15 @@ export default {
     status: false,
     fn: validateEnv,
     args: [],
-    context: null
+    context: null,
   },
   db: {
     priority: 2,
-    status: true,
+    status: false,
     fn: new Db().connectDbs,
     args: [
       {
-        mongo: { url: config.dataBaseUrl }
+        mongo: { url: config.dataBaseUrl },
       },
       // {
       //   mysql : {properties : config.sqlServerDetails}
@@ -37,20 +37,20 @@ export default {
        * in the format above and pass url
        */
     ],
-    context: new Db()
+    context: new Db(),
   },
-  redis: {
-    priority: 4,
-    status: false,
-    fn: new RedisCache().connectRedis,
-    args: [],
-    context: new RedisCache()
-  },
+  // redis: {
+  //   priority: 4,
+  //   status: false,
+  //   fn: new RedisCache().connectRedis,
+  //   args: [],
+  //   context: new RedisCache()
+  // },
   cron: {
     priority: 5,
     status: false,
     fn: new CronJobs().startCronJobs,
     args: [],
-    context: new CronJobs()
-  }
+    context: new CronJobs(),
+  },
 };
